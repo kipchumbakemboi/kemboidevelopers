@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Chat with {{ other_user.full_name or other_user.username }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-8 py-8">
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-x-4">
+            <img src="https://i.pravatar.cc/48?img=28" class="w-12 h-12 rounded-3xl">
+            <div>
+                <div class="font-semibold text-xl">{{ other_user.full_name or other_user.username }}</div>
+                <div class="text-emerald-600 text-sm">Online</div>
+            </div>
+        </div>
+        <a href="{{ url_for('messages.inbox') }}" class="text-sm text-emerald-600">← Back to inbox</a>
+    </div>
+
+    <!-- Chat Container -->
+    <div class="bg-white border border-slate-200 rounded-3xl h-[560px] flex flex-col">
+        <!-- Messages -->
+        <div id="chat-messages" class="flex-1 p-6 overflow-auto space-y-5">
+            {% for msg in messages %}
+            <div class="{% if msg.sender_id == current_user.id %}flex justify-end{% endif %}">
+                <div class="max-w-[70%] px-5 py-3 rounded-3xl {% if msg.sender_id == current_user.id %}bg-emerald-600 text-white{% else %}bg-slate-100{% endif %}">
+                    {{ msg.content }}
+                    <div class="text-[10px] mt-1 opacity-70 text-right">
+                        {{ msg.created_at.strftime('%H:%M') }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Input -->
+        <div class="border-t p-5">
+            <form id="chat-form" class="flex gap-x-3">
+                <input type="hidden" id="receiver_id" value="{{ other_user.id }}">
+                <input type="text" id="message-input" placeholder="Type a message..." 
+                       class="flex-1 px-6 py-3 border border-slate-300 rounded-3xl text-sm focus:outline-none">
+                <button type="submit" class="px-8 bg-emerald-600 text-white rounded-3xl font-medium">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+<script>
+    const socket = io();
+    const chatMessages = document.getElementById('chat-messages');
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('message-input');
+    const receiverId = document.getElementById('receiver_id').value;
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const content = input.value.trim();
+        if (!content) return;
+
+        // Send via AJAX
+        fetch('{{ url_for("messages.send_message") }}', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `receiver_id=${receiverId}&content=${encodeURIComponent(content)}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Add message to chat
+                addMessage(content, true, data.created_at);
+                input.value = '';
+                
+                // Also emit via socket
+                socket.emit('send_message', {
+                    receiver_id: receiverId,
+                    content: content
+                });
+            }
+        });
+    });
+
+    function addMessage(content, isMine, time) {
+        const div = document.createElement('div');
+        div.className = isMine ? 'flex justify-end' : '';
+        div.innerHTML = `
+            <div class="max-w-[70%] px-5 py-3 rounded-3xl ${isMine ? 'bg-emerald-600 text-white' : 'bg-slate-100'}">
+                ${content}
+                <div class="text-[10px] mt-1 opacity-70 text-right">${time}</div>
+            </div>
+        `;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Receive messages
+    socket.on('new_message', function(data) {
+        if (data.sender_id != {{ current_user.id }}) {
+            addMessage(data.content, false, data.created_at);
+        }
+    });
+
+    // Auto scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+</script>
+{% endblock %}

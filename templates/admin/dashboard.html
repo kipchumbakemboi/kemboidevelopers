@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 pt-8 pb-16">
+    <div class="flex justify-between mb-10 items-end">
+        <div>
+            <div class="text-emerald-600 font-semibold tracking-widest text-xs">ADMIN PORTAL</div>
+            <h1 class="font-display text-5xl tracking-tighter">Platform overview</h1>
+        </div>
+        <div class="text-right">
+            <div class="text-xs text-emerald-600 font-medium">Last updated just now</div>
+        </div>
+    </div>
+    
+    <!-- Key Metrics -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+        <div class="bg-white border border-slate-200 px-7 py-8 rounded-3xl">
+            <div class="text-emerald-600 text-xs font-medium">TOTAL USERS</div>
+            <div class="font-display text-6xl font-semibold mt-3 tracking-tighter">4,872</div>
+            <div class="text-xs mt-3 text-emerald-600">+184 this month</div>
+        </div>
+        <div class="bg-white border border-slate-200 px-7 py-8 rounded-3xl">
+            <div class="text-emerald-600 text-xs font-medium">ACTIVE PROJECTS</div>
+            <div class="font-display text-6xl font-semibold mt-3 tracking-tighter">312</div>
+            <div class="text-xs mt-3 text-emerald-600">+29 this month</div>
+        </div>
+        <div class="bg-white border border-slate-200 px-7 py-8 rounded-3xl">
+            <div class="text-emerald-600 text-xs font-medium">QUOTE REQUESTS</div>
+            <div class="font-display text-6xl font-semibold mt-3 tracking-tighter">84</div>
+            <div class="text-xs mt-3 text-emerald-600">This week</div>
+        </div>
+        <div class="bg-white border border-slate-200 px-7 py-8 rounded-3xl">
+            <div class="text-emerald-600 text-xs font-medium">REVENUE (MONTH)</div>
+            <div class="font-display text-5xl font-semibold mt-3 tracking-tighter">KES 28.4M</div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="grid md:grid-cols-12 gap-6">
+        <div class="md:col-span-5 bg-white border border-slate-200 rounded-3xl p-7">
+            <div class="font-semibold mb-4">Recent signups</div>
+            <div class="space-y-4">
+                {% for user in recent_users %}
+                <div class="flex items-center gap-x-4">
+                    <img src="https://i.pravatar.cc/28?img={{ loop.index + 20 }}" class="rounded-2xl">
+                    <div class="flex-1">
+                        <div class="text-sm font-medium">{{ user.full_name or user.username }}</div>
+                        <div class="text-xs text-emerald-600">{{ user.role|capitalize }} • {{ user.created_at.strftime('%b %d') }}</div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-sm text-slate-500">No recent signups</div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="md:col-span-7 bg-white border border-slate-200 rounded-3xl p-7">
+            <div class="font-semibold mb-4">Recent quote requests</div>
+            <div class="overflow-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-left text-emerald-600 text-xs border-b">
+                            <th class="pb-3">Client</th>
+                            <th class="pb-3">Type</th>
+                            <th class="pb-3">Budget</th>
+                            <th class="pb-3"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-xs">
+                        {% for quote in recent_quotes %}
+                        <tr>
+                            <td class="py-3">{{ quote.user.full_name if quote.user else 'Unknown' }}</td>
+                            <td>{{ quote.project_type }}</td>
+                            <td>{{ quote.budget_range }}</td>
+                            <td><span class="px-3 py-px bg-emerald-100 text-emerald-700 text-xs rounded-2xl">{{ quote.status|title }}</span></td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="4" class="py-4 text-center text-slate-500">No recent quotes</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

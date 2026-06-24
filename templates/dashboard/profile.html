@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-xl mx-auto px-8 py-10">
+    <div class="max-w-3xl mx-auto">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-4xl font-semibold tracking-tighter">Your profile</h1>
+            <a href="#" class="px-5 py-2.5 rounded-3xl border text-sm font-medium">Edit profile</a>
+        </div>
+        
+        <div class="bg-white border border-slate-200 rounded-3xl p-9">
+            <div class="flex items-center gap-x-7">
+                <img src="{{ url_for('static', filename='images/' + (current_user.profile_pic or 'default.png')) }}" class="w-24 h-24 rounded-3xl object-cover ring-4 ring-slate-100" alt="Profile">
+                <div>
+                    <div class="font-semibold text-3xl tracking-tight">{{ current_user.full_name }}</div>
+                    <div class="text-emerald-600">@{{ current_user.username }}</div>
+                    <div class="text-xs text-slate-500 mt-1">{{ current_user.email }}</div>
+                </div>
+            </div>
+            
+            <div class="mt-9 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <div class="text-xs tracking-wider text-emerald-600 font-medium">ROLE</div>
+                    <div class="font-medium mt-px">{{ current_user.role|capitalize }}</div>
+                </div>
+                <div>
+                    <div class="text-xs tracking-wider text-emerald-600 font-medium">PHONE</div>
+                    <div class="font-medium mt-px">{{ current_user.phone or 'Not provided' }}</div>
+                </div>
+                <div class="md:col-span-2">
+                    <div class="text-xs tracking-wider text-emerald-600 font-medium">BIO</div>
+                    <div class="mt-1 text-slate-700">{{ current_user.bio or "No bio added yet." }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Security Section -->
+        <div class="mt-9 bg-white border border-slate-200 rounded-3xl p-9">
+            <div class="font-semibold mb-5">Security</div>
+            <div class="space-y-4 text-sm">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="font-medium">Two-factor authentication</div>
+                        <div class="text-xs text-emerald-600">{% if current_user.two_factor_enabled %}Enabled{% else %}Disabled{% endif %}</div>
+                    </div>
+                    <a href="{{ url_for('auth.setup_2fa') if not current_user.two_factor_enabled else '#' }}" class="text-emerald-600 text-xs font-medium">{% if current_user.two_factor_enabled %}Manage{% else %}Enable 2FA{% endif %}</a>
+                </div>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="font-medium">Connected accounts</div>
+                        <div class="text-xs text-emerald-600">Google • GitHub</div>
+                    </div>
+                    <a href="#" class="text-emerald-600 text-xs font-medium">Manage</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

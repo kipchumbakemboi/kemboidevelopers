@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Invoices{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 py-10">
+    <div class="flex justify-between mb-8">
+        <h1 class="font-display text-4xl tracking-tighter">Invoices</h1>
+        {% if current_user.role == 'admin' %}
+        <a href="#" class="px-6 py-3 bg-emerald-600 text-white rounded-3xl text-sm">Create Invoice</a>
+        {% endif %}
+    </div>
+    
+    <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-slate-50 border-b">
+                    <th class="px-8 py-4 text-left">Invoice #</th>
+                    <th class="px-8 py-4 text-left">Project</th>
+                    <th class="px-8 py-4 text-left">Amount</th>
+                    <th class="px-8 py-4 text-left">Status</th>
+                    <th class="px-8 py-4"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invoice in invoices %}
+                <tr class="border-b last:border-none">
+                    <td class="px-8 py-5 font-medium">{{ invoice.invoice_number }}</td>
+                    <td class="px-8 py-5">{{ invoice.project.title if invoice.project else '—' }}</td>
+                    <td class="px-8 py-5 font-semibold">KES {{ "{:,.0f}".format(invoice.amount) }}</td>
+                    <td class="px-8 py-5">
+                        <span class="px-4 py-1 text-xs rounded-3xl 
+                            {% if invoice.status == 'paid' %}bg-emerald-100 text-emerald-700{% else %}bg-amber-100 text-amber-700{% endif %}">
+                            {{ invoice.status|title }}
+                        </span>
+                    </td>
+                    <td class="px-8 py-5 text-right">
+                        <a href="{{ url_for('invoices.download_pdf', id=invoice.id) }}" class="text-emerald-600 text-sm font-medium">Download PDF</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" class="px-8 py-12 text-center text-slate-500">No invoices yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

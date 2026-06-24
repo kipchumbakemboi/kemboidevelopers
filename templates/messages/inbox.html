@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 pt-8 pb-16">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="font-display text-4xl tracking-tighter">Messages</h1>
+        <a href="{{ url_for('messages.compose') }}" class="px-6 py-3 bg-emerald-600 text-white text-sm rounded-3xl font-semibold">New message</a>
+    </div>
+    
+    <div class="grid md:grid-cols-12 gap-6">
+        <!-- Conversations list -->
+        <div class="md:col-span-4 bg-white border border-slate-200 rounded-3xl overflow-hidden">
+            <div class="px-6 py-5 border-b text-sm font-semibold flex items-center justify-between">
+                <div>All conversations</div>
+                <div class="text-emerald-600 text-xs">12</div>
+            </div>
+            
+            <div class="divide-y">
+                {% for i in range(5) %}
+                <div class="px-6 py-5 flex gap-x-4 hover:bg-emerald-50 cursor-pointer">
+                    <img src="https://i.pravatar.cc/36?img={{ i+10 }}" class="w-9 h-9 rounded-2xl" alt="">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-center">
+                            <div class="font-medium truncate">Sarah Kimani</div>
+                            <div class="text-xs text-emerald-600">2h</div>
+                        </div>
+                        <div class="text-xs text-slate-500 truncate">Thanks for the update on the project...</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Chat window -->
+        <div class="md:col-span-8 bg-white border border-slate-200 rounded-3xl flex flex-col h-[540px]">
+            <div class="px-7 py-5 border-b flex items-center justify-between">
+                <div class="flex items-center gap-x-4">
+                    <img src="https://i.pravatar.cc/36?img=28" class="w-9 h-9 rounded-2xl">
+                    <div>
+                        <div class="font-semibold">Sarah Kimani</div>
+                        <div class="text-emerald-600 text-xs">Online • Last seen 3m ago</div>
+                    </div>
+                </div>
+                <div class="flex gap-x-2">
+                    <button class="px-4 py-2 text-xs font-medium border rounded-3xl">Schedule call</button>
+                </div>
+            </div>
+            
+            <!-- Messages -->
+            <div class="flex-1 p-7 space-y-5 overflow-auto text-sm">
+                <div>
+                    <div class="inline-block max-w-[75%] px-5 py-3 bg-emerald-600 text-white rounded-3xl rounded-bl-none">Hi! How's the Kemboi CRM coming along?</div>
+                    <div class="text-xs text-emerald-600 mt-1 ml-1">Sarah • 10:42</div>
+                </div>
+                
+                <div class="text-right">
+                    <div class="inline-block max-w-[75%] px-5 py-3 bg-slate-100 text-slate-800 rounded-3xl rounded-br-none">Hey Sarah! It's going really well. We're at 68% completion.</div>
+                    <div class="text-xs text-emerald-600 mt-1 mr-1">You • 10:45</div>
+                </div>
+            </div>
+            
+            <!-- Message Input -->
+            <div class="border-t p-5">
+                <div class="flex items-center gap-x-3">
+                    <input type="text" placeholder="Write a message..." class="flex-1 px-5 py-3 border border-slate-300 rounded-3xl text-sm">
+                    <button class="px-6 py-3 bg-emerald-600 text-white rounded-3xl text-sm font-medium">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

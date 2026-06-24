@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Insights{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 pt-14">
+    <div class="max-w-2xl">
+        <div class="text-emerald-600 text-xs tracking-[3px]">THOUGHT LEADERSHIP</div>
+        <h1 class="font-display text-5xl tracking-tighter mt-3">Insights & Perspectives</h1>
+    </div>
+    
+    <div class="mt-12 grid md:grid-cols-3 gap-7">
+        {% for post in posts %}
+        <article class="group">
+            <div class="aspect-video bg-slate-100 rounded-3xl overflow-hidden">
+                <img src="{{ url_for('static', filename='images/' + (post.image or 'default.jpg')) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+            </div>
+            <div class="mt-6">
+                <div class="font-semibold text-xl tracking-tight">{{ post.title }}</div>
+                <p class="mt-2 text-sm text-slate-600">{{ post.excerpt }}</p>
+                <div class="mt-4 text-xs text-emerald-600">{{ post.created_at.strftime('%B %d, %Y') }}</div>
+            </div>
+        </article>
+        {% else %}
+        <div class="col-span-3 text-center py-12">
+            <p class="text-slate-500">Blog posts coming soon.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

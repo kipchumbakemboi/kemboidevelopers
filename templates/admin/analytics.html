@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 py-10">
+    <h1 class="font-display text-4xl tracking-tighter mb-8">Platform Analytics</h1>
+    
+    <!-- Stats Cards -->
+    <div class="grid md:grid-cols-4 gap-6 mb-10">
+        <div class="bg-white border border-slate-200 p-7 rounded-3xl">
+            <div class="text-xs text-emerald-600">TOTAL USERS</div>
+            <div class="text-5xl font-bold tracking-tighter mt-2">{{ total_users }}</div>
+        </div>
+        <div class="bg-white border border-slate-200 p-7 rounded-3xl">
+            <div class="text-xs text-emerald-600">ACTIVE PROJECTS</div>
+            <div class="text-5xl font-bold tracking-tighter mt-2">{{ active_projects }}</div>
+        </div>
+        <div class="bg-white border border-slate-200 p-7 rounded-3xl">
+            <div class="text-xs text-emerald-600">MONTHLY REVENUE</div>
+            <div class="text-4xl font-bold tracking-tighter mt-3">KES {{ "{:,.0f}".format(revenue) }}</div>
+        </div>
+        <div class="bg-white border border-slate-200 p-7 rounded-3xl">
+            <div class="text-xs text-emerald-600">AVG RATING</div>
+            <div class="text-5xl font-bold tracking-tighter mt-2">{{ avg_rating|round(1) }}</div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white border border-slate-200 p-7 rounded-3xl">
+            <div class="font-semibold mb-4">Projects by Status</div>
+            <canvas id="statusChart" height="120"></canvas>
+        </div>
+        
+        <div class="bg-white border border-slate-200 p-7 rounded-3xl">
+            <div class="font-semibold mb-4">Monthly Revenue Trend</div>
+            <canvas id="revenueChart" height="120"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Status Chart
+    new Chart(document.getElementById('statusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Completed', 'In Progress', 'Review', 'Planning'],
+            datasets: [{
+                data: [{{ completed }}, {{ in_progress }}, {{ review }}, {{ planning }}],
+                backgroundColor: ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0']
+            }]
+        }
+    });
+
+    // Revenue Chart
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Revenue (KES)',
+                data: [1200000, 1850000, 2400000, 1950000, 3200000, 2840000],
+                borderColor: '#10b981',
+                tension: 0.4
+            }]
+        },
+        options: { plugins: { legend: { display: false } } }
+    });
+</script>
+{% endblock %}

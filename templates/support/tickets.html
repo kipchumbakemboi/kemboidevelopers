@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Support Tickets{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 py-10">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="font-display text-4xl tracking-tighter">Support Tickets</h1>
+        <a href="{{ url_for('support.create') }}" class="px-6 py-3 bg-emerald-600 text-white rounded-3xl text-sm font-semibold">New Ticket</a>
+    </div>
+    
+    <div class="bg-white border border-slate-200 rounded-3xl p-8">
+        <p class="text-center text-slate-500 py-12">No support tickets yet.</p>
+    </div>
+</div>
+{% endblock %}

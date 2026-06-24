@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Our Work{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 pt-14">
+    <div class="max-w-2xl">
+        <div class="text-emerald-600 text-xs tracking-[3px]">SELECTED WORK</div>
+        <h1 class="font-display text-5xl tracking-tighter mt-3">Work we're proud of.</h1>
+    </div>
+    
+    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for project in projects %}
+        <div class="group bg-white border border-slate-200 rounded-3xl overflow-hidden">
+            <div class="relative h-64">
+                <img src="{{ url_for('static', filename='images/' + (project.image or 'default.jpg')) }}" class="w-full h-full object-cover">
+                <div class="absolute top-4 right-4 px-3 py-1 text-xs bg-white/90 backdrop-blur rounded-2xl font-medium">{{ project.category }}</div>
+            </div>
+            <div class="p-6">
+                <div class="font-semibold tracking-tight text-xl">{{ project.title }}</div>
+                <div class="text-sm text-emerald-600">{{ project.client }}</div>
+                <p class="mt-3 text-sm text-slate-600">{{ project.description[:120] }}...</p>
+            </div>
+        </div>
+        {% else %}
+        <!-- Demo Projects -->
+        <div class="group bg-white border border-slate-200 rounded-3xl overflow-hidden">
+            <div class="relative h-64">
+                <img src="https://picsum.photos/id/1015/600/400" class="w-full h-full object-cover">
+                <div class="absolute top-4 right-4 px-3 py-1 text-xs bg-white/90 backdrop-blur rounded-2xl font-medium">Enterprise</div>
+            </div>
+            <div class="p-6">
+                <div class="font-semibold tracking-tight text-xl">Equity Bank Digital Platform</div>
+                <div class="text-sm text-emerald-600">Equity Bank • 2025</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

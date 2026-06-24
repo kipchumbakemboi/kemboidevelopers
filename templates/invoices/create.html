@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Create Invoice{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto px-8 py-12">
+    <h1 class="font-display text-4xl tracking-tighter mb-8">Create Invoice</h1>
+    
+    <div class="bg-white border border-slate-200 p-8 rounded-3xl">
+        <form method="POST">
+            <div class="mb-6">
+                <label class="text-sm font-medium">Project</label>
+                <input type="text" value="{{ project.title }}" disabled class="mt-2 w-full px-5 py-3.5 border border-slate-200 rounded-3xl bg-slate-50">
+            </div>
+            
+            <div class="mb-6">
+                <label class="text-sm font-medium">Amount (KES)</label>
+                <input type="number" name="amount" step="0.01" required class="mt-2 w-full px-5 py-3.5 border border-slate-200 rounded-3xl">
+            </div>
+            
+            <button type="submit" class="w-full py-4 bg-emerald-600 text-white font-semibold rounded-3xl">Generate Invoice</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

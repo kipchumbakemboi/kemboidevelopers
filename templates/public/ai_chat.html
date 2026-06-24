@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}AI Assistant{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-8 py-16">
+    <div class="text-center mb-10">
+        <div class="inline-flex px-4 py-2 bg-emerald-100 text-emerald-700 rounded-3xl text-xs tracking-[2px]">POWERED BY GEMINI + OPENAI</div>
+        <h1 class="font-display text-5xl tracking-tighter mt-4">Kemboi AI Assistant</h1>
+        <p class="text-emerald-600">Instant answers about our services, pricing, and technology.</p>
+    </div>
+    
+    <div class="bg-white border border-slate-200 rounded-3xl shadow-xl h-[520px] flex flex-col">
+        <!-- Chat Header -->
+        <div class="px-7 py-5 border-b flex justify-between items-center">
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-emerald-600 rounded-2xl flex items-center justify-center text-white">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>
+                    <div class="font-semibold">Kemboi AI</div>
+                    <div class="text-xs text-emerald-600">Online • Powered by Gemini 2.0</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Body -->
+        <div id="chat-body" class="flex-1 p-7 overflow-auto space-y-6 text-sm">
+            <div class="flex gap-x-3">
+                <div class="w-8 h-8 bg-emerald-600 text-white flex-shrink-0 rounded-2xl flex items-center justify-center text-xs font-bold">AI</div>
+                <div class="max-w-[80%] bg-emerald-50 px-5 py-4 rounded-3xl">Hello! I'm Kemboi's AI assistant. How can I help you today?</div>
+            </div>
+        </div>
+        
+        <!-- Input -->
+        <div class="border-t p-6">
+            <div class="flex gap-x-3">
+                <input id="chat-input" type="text" placeholder="Ask anything about Kemboi Developers..." 
+                       class="flex-1 px-6 py-3.5 border border-slate-300 rounded-3xl text-sm focus:outline-none" onkeyup="if (event.key === 'Enter') sendMessage()">
+                <button onclick="sendMessage()" class="px-7 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-3xl">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-4 text-xs text-emerald-600">This is a demo. Real AI integration requires API keys.</div>
+</div>
+
+<script>
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const chatBody = document.getElementById('chat-body');
+    
+    if (!input.value.trim()) return;
+    
+    // User message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'flex justify-end';
+    userMsg.innerHTML = `<div class="max-w-[75%] bg-emerald-600 text-white px-5 py-4 rounded-3xl">${input.value}</div>`;
+    chatBody.appendChild(userMsg);
+    
+    const message = input.value;
+    input.value = '';
+    
+    // Simulate AI response
+    setTimeout(() => {
+        const aiMsg = document.createElement('div');
+        aiMsg.className = 'flex gap-x-3';
+        aiMsg.innerHTML = `
+            <div class="w-8 h-8 bg-emerald-600 text-white flex-shrink-0 rounded-2xl flex items-center justify-center text-xs font-bold">AI</div>
+            <div class="max-w-[80%] bg-emerald-50 px-5 py-4 rounded-3xl">Thank you for your question. Our team would be happy to provide a detailed quote. Would you like to request one now?</div>
+        `;
+        chatBody.appendChild(aiMsg);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }, 800);
+    
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+</script>
+{% endblock %}

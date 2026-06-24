@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Our Services{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 pt-14 pb-20">
+    <div class="max-w-2xl">
+        <div class="text-emerald-600 text-xs tracking-[3px]">WHAT WE OFFER</div>
+        <h1 class="font-display text-5xl tracking-tighter mt-3">Innovative solutions for every need.</h1>
+        <p class="mt-4 text-lg text-slate-600">We combine creativity, technical skills and professional consultancy to provide solutions that improve efficiency, productivity and business growth.</p>
+    </div>
+    
+    <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for service in [
+            {"icon": "fa-globe", "title": "Web Development", "desc": "Responsive, secure, and modern websites for businesses, organizations, and personal brands."},
+            {"icon": "fa-laptop-code", "title": "Software Development", "desc": "Custom software systems tailored to business operations, management, and automation needs."},
+            {"icon": "fa-graduation-cap", "title": "Academic Writing", "desc": "Research Papers, Essays, Reports, Case Studies, Literature Reviews, and Referencing & Formatting."},
+            {"icon": "fa-book", "title": "Thesis & Dissertation Support", "desc": "Proposal Writing, Thesis Development, Data Analysis, Research Methodology, Editing & Proofreading."},
+            {"icon": "fa-briefcase", "title": "Freelancing Services", "desc": "Virtual Assistance, Data Entry, Graphic Design, Website Development, Technical Documentation."},
+            {"icon": "fa-headset", "title": "IT Consultancy", "desc": "Professional advice and strategic technology solutions to improve business performance."},
+            {"icon": "fa-database", "title": "Database Management", "desc": "Design, manage, and maintain secure databases for efficient storage of business information."},
+            {"icon": "fa-palette", "title": "Graphic Design & Branding", "desc": "Professional digital branding materials including logos, posters, business cards, and social media designs."},
+            {"icon": "fa-tools", "title": "System Maintenance & Support", "desc": "Technical support, troubleshooting, and system maintenance services."}
+        ] %}
+        <div class="group bg-white border border-slate-200 p-8 rounded-3xl hover:border-emerald-200 transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center mb-6">
+                <i class="fas {{ service.icon }}"></i>
+            </div>
+            <h4 class="font-semibold text-xl tracking-tight">{{ service.title }}</h4>
+            <p class="mt-3 text-sm text-slate-600">{{ service.desc }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

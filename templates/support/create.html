@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Create Support Ticket{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-8 py-12">
+    <h1 class="font-display text-4xl tracking-tighter mb-8">Create Support Ticket</h1>
+    
+    <form method="POST" class="bg-white border border-slate-200 p-8 rounded-3xl">
+        <div class="space-y-5">
+            <div>
+                <label class="text-sm font-medium">Subject</label>
+                <input type="text" name="subject" required class="mt-1.5 w-full px-5 py-3.5 border border-slate-200 rounded-3xl text-sm">
+            </div>
+            <div>
+                <label class="text-sm font-medium">Priority</label>
+                <select name="priority" class="mt-1.5 w-full px-5 py-3.5 border border-slate-200 rounded-3xl text-sm">
+                    <option>Low</option>
+                    <option selected>Medium</option>
+                    <option>High</option>
+                    <option>Urgent</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-sm font-medium">Description</label>
+                <textarea name="description" rows="6" required class="mt-1.5 w-full px-5 py-3.5 border border-slate-200 rounded-3xl text-sm"></textarea>
+            </div>
+            
+            <button type="submit" class="w-full py-4 bg-emerald-600 text-white font-semibold rounded-3xl">Submit Ticket</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

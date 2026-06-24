@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Client Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-8 pt-8 pb-16">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-10">
+        <div>
+            <h1 class="text-4xl font-semibold tracking-tighter">Good morning, {{ current_user.full_name.split()[0] if current_user.full_name else current_user.username }}.</h1>
+            <p class="text-slate-600">Here's what's happening with your projects.</p>
+        </div>
+        <a href="{{ url_for('public.quote') }}" class="px-6 py-3 bg-emerald-600 text-white text-sm font-semibold rounded-3xl flex items-center gap-x-2">
+            <i class="fas fa-plus"></i> 
+            <span>New Project</span>
+        </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+        <div class="bg-white border border-slate-200 rounded-3xl px-6 py-7">
+            <div class="flex justify-between">
+                <div>
+                    <div class="text-xs font-semibold text-emerald-600 tracking-wider">ACTIVE PROJECTS</div>
+                    <div class="font-display text-5xl font-bold tracking-tighter mt-1">4</div>
+                </div>
+                <i class="fas fa-tasks text-4xl text-emerald-100"></i>
+            </div>
+        </div>
+        
+        <div class="bg-white border border-slate-200 rounded-3xl px-6 py-7">
+            <div class="flex justify-between">
+                <div>
+                    <div class="text-xs font-semibold text-emerald-600 tracking-wider">PENDING QUOTES</div>
+                    <div class="font-display text-5xl font-bold tracking-tighter mt-1">2</div>
+                </div>
+                <i class="fas fa-file-invoice text-4xl text-emerald-100"></i>
+            </div>
+        </div>
+        
+        <div class="bg-white border border-slate-200 rounded-3xl px-6 py-7">
+            <div class="flex justify-between">
+                <div>
+                    <div class="text-xs font-semibold text-emerald-600 tracking-wider">MESSAGES</div>
+                    <div class="font-display text-5xl font-bold tracking-tighter mt-1">18</div>
+                </div>
+                <i class="fas fa-envelope text-4xl text-emerald-100"></i>
+            </div>
+        </div>
+        
+        <div class="bg-white border border-slate-200 rounded-3xl px-6 py-7">
+            <div class="flex justify-between">
+                <div>
+                    <div class="text-xs font-semibold text-emerald-600 tracking-wider">TOTAL SPENT</div>
+                    <div class="font-display text-5xl font-bold tracking-tighter mt-1">KES 4.2M</div>
+                </div>
+                <i class="fas fa-wallet text-4xl text-emerald-100"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Section -->
+    <div class="mb-10">
+        <div class="flex justify-between items-center mb-5 px-1">
+            <div class="font-semibold text-xl tracking-tight">Your active projects</div>
+            <a href="{{ url_for('projects.list') }}" class="text-sm font-medium text-emerald-600">View all →</a>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+            {% for i in range(3) %}
+            <div class="bg-white border border-slate-200 p-6 rounded-3xl">
+                <div class="flex justify-between mb-4">
+                    <div>
+                        <div class="font-semibold">Kemboi CRM Platform</div>
+                        <div class="text-xs text-emerald-600">In Progress • 68% complete</div>
+                    </div>
+                    <div class="text-emerald-600"><i class="fas fa-chart-line text-xl"></i></div>
+                </div>
+                
+                <div class="h-2 bg-emerald-100 rounded-full mb-4">
+                    <div class="h-2 w-[68%] bg-emerald-600 rounded-full"></div>
+                </div>
+                
+                <div class="flex justify-between items-center text-xs">
+                    <div>
+                        <span class="font-medium">Sarah Kimani</span>
+                        <span class="text-slate-400"> • Lead Developer</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="font-mono text-emerald-600">Mar 12</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="grid md:grid-cols-5 gap-6">
+        <div class="md:col-span-3 bg-white border border-slate-200 rounded-3xl p-7">
+            <div class="font-semibold mb-6 px-1">Recent activity</div>
+            <div class="space-y-6 text-sm">
+                {% for activity in [
+                    {"time":"2h ago", "title":"Invoice paid", "desc":"Invoice #INV-3921 for KES 185,000 has been paid."},
+                    {"time":"Yesterday", "title":"Milestone completed", "desc":"Phase 3 of Safaricom Enterprise completed."},
+                    {"time":"Jan 28", "title":"New message", "desc":"Sarah left a comment on Project Dashboard."}
+                ] %}
+                <div class="flex gap-x-4">
+                    <div class="font-mono text-xs pt-px w-16 text-emerald-600">{{ activity.time }}</div>
+                    <div>
+                        <div class="font-medium">{{ activity.title }}</div>
+                        <div class="text-slate-500">{{ activity.desc }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="md:col-span-2 bg-white border border-slate-200 rounded-3xl p-7">
+            <div class="font-semibold mb-5 px-1">Quick actions</div>
+            <div class="space-y-3 text-sm">
+                <a href="{{ url_for('public.quote') }}" class="flex items-center gap-x-4 px-5 py-4 bg-emerald-50 hover:bg-emerald-100 rounded-3xl transition-colors">
+                    <i class="fas fa-file-invoice w-5 text-emerald-600"></i>
+                    <div class="font-medium">Request a new quote</div>
+                </a>
+                <a href="{{ url_for('messages.inbox') }}" class="flex items-center gap-x-4 px-5 py-4 hover:bg-slate-50 rounded-3xl transition-colors">
+                    <i class="fas fa-comments w-5 text-emerald-600"></i>
+                    <div class="font-medium">Message your team</div>
+                </a>
+                <a href="{{ url_for('support.create') }}" class="flex items-center gap-x-4 px-5 py-4 hover:bg-slate-50 rounded-3xl transition-colors">
+                    <i class="fas fa-headset w-5 text-emerald-600"></i>
+                    <div class="font-medium">Open support ticket</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

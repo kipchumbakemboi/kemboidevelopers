@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}FAQ{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-8 py-16">
+    <h1 class="font-display text-5xl tracking-tighter">Frequently Asked Questions</h1>
+    
+    <div class="mt-12 space-y-6">
+        {% for faq in [
+            {"q": "What services do you offer?", "a": "We offer Web Development, Software Development, Academic Writing, Thesis Support, IT Consultancy, Graphic Design, Database Management, and more."},
+            {"q": "How long does it take to build a website?", "a": "Depending on complexity, a typical website takes 4–8 weeks."},
+            {"q": "Do you provide academic writing services?", "a": "Yes. We offer professional academic writing, thesis development, research papers, and dissertation support."},
+            {"q": "What is your payment process?", "a": "We use milestone-based payments. 30% upfront, 40% on delivery, 30% on completion."},
+            {"q": "Do you work with students?", "a": "Yes. We provide high-quality, plagiarism-free academic assistance to students and researchers."}
+        ] %}
+        <div class="border border-slate-200 px-8 py-7 rounded-3xl">
+            <div class="font-semibold">{{ faq.q }}</div>
+            <div class="mt-2 text-slate-600">{{ faq.a }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
