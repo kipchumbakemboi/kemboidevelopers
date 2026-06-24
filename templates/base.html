@@ -102,31 +102,41 @@
                     <a href="{{ url_for('public.contact') }}" class="hover:text-slate-900 transition-colors">Contact</a>
                 </div>
 
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-x-9 text-sm font-medium">
+                    <a href="{{ url_for('public.index') }}" class="hover:text-emerald-600 transition-colors">Home</a>
+                    <a href="{{ url_for('public.about') }}" class="hover:text-emerald-600 transition-colors">About</a>
+                    <a href="{{ url_for('public.services') }}" class="hover:text-emerald-600 transition-colors">Services</a>
+                    <a href="{{ url_for('public.portfolio') }}" class="hover:text-emerald-600 transition-colors">Work</a>
+                    <a href="{{ url_for('public.contact') }}" class="hover:text-emerald-600 transition-colors">Contact</a>
+                    <a href="{{ url_for('payments.pay') }}" class="text-emerald-600 font-semibold">Pay Now</a>
+                </div>
+
                 <!-- Right Side Actions -->
                 <div class="flex items-center gap-x-3">
                     {% if current_user.is_authenticated %}
                         <!-- Authenticated User -->
-                        <div class="flex items-center gap-x-2">
+                        <div class="hidden md:flex items-center gap-x-2">
                             <a href="{{ url_for('dashboard.client') if current_user.role == 'client' else url_for('dashboard.freelancer') }}" 
-                               class="px-4 py-2 text-sm font-medium rounded-3xl hover:bg-slate-100 transition-colors flex items-center gap-x-2">
+                               class="px-4 py-2 text-sm font-medium rounded-3xl hover:bg-emerald-50 transition-colors flex items-center gap-x-2">
                                 <i class="fas fa-tachometer-alt"></i>
-                                <span class="hidden md:inline">Dashboard</span>
+                                <span>Dashboard</span>
                             </a>
                             
                             <div class="relative group">
-                                <button class="flex items-center gap-x-2 px-2 py-1.5 rounded-3xl hover:bg-slate-100 transition-colors">
+                                <button class="flex items-center gap-x-2 px-2 py-1.5 rounded-3xl hover:bg-emerald-50 transition-colors">
                                     <img src="{{ url_for('static', filename='images/' + (current_user.profile_pic or 'default.png')) }}" 
-                                         class="w-8 h-8 rounded-2xl object-cover ring-2 ring-slate-100" alt="Profile">
-                                    <span class="hidden md:block font-medium text-sm pr-1">{{ current_user.username }}</span>
+                                         class="w-8 h-8 rounded-2xl object-cover ring-2 ring-emerald-100" alt="Profile">
+                                    <span class="font-medium text-sm pr-1">{{ current_user.username }}</span>
                                 </button>
                                 
                                 <!-- Dropdown -->
-                                <div class="absolute hidden group-hover:block right-0 mt-2 w-56 bg-white border border-slate-200 rounded-3xl shadow-xl py-2 text-sm">
-                                    <a href="{{ url_for('dashboard.profile') }}" class="flex items-center px-4 py-3 hover:bg-slate-50">
-                                        <i class="fas fa-user w-5 mr-3 text-slate-400"></i> Profile
+                                <div class="absolute hidden group-hover:block right-0 mt-2 w-56 bg-white border border-emerald-100 rounded-3xl shadow-xl py-2 text-sm z-50">
+                                    <a href="{{ url_for('dashboard.profile') }}" class="flex items-center px-4 py-3 hover:bg-emerald-50">
+                                        <i class="fas fa-user w-5 mr-3 text-emerald-400"></i> Profile
                                     </a>
-                                    <a href="{{ url_for('messages.inbox') }}" class="flex items-center px-4 py-3 hover:bg-slate-50">
-                                        <i class="fas fa-inbox w-5 mr-3 text-slate-400"></i> Messages
+                                    <a href="{{ url_for('messages.inbox') }}" class="flex items-center px-4 py-3 hover:bg-emerald-50">
+                                        <i class="fas fa-inbox w-5 mr-3 text-emerald-400"></i> Messages
                                     </a>
                                     <div class="border-t my-1"></div>
                                     <a href="{{ url_for('auth.logout') }}" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50">
@@ -138,18 +148,43 @@
                     {% else %}
                         <!-- Guest -->
                         <a href="{{ url_for('auth.login') }}" 
-                           class="px-5 py-2.5 text-sm font-semibold rounded-3xl hover:bg-slate-100 transition-colors">Log in</a>
+                           class="hidden md:block px-5 py-2.5 text-sm font-semibold rounded-3xl hover:bg-emerald-50 transition-colors">Log in</a>
                         <a href="{{ url_for('auth.register') }}" 
-                           class="px-6 py-2.5 bg-slate-900 text-white text-sm font-semibold rounded-3xl hover:bg-slate-800 transition-all modern-btn">
+                           class="px-6 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-3xl hover:bg-emerald-700 transition-all modern-btn">
                             Get Started
                         </a>
                     {% endif %}
                     
-                    <!-- Mobile Menu -->
-                    <button class="md:hidden w-10 h-10 flex items-center justify-center text-xl">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex items-center justify-center text-xl text-emerald-600">
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white border-t px-8 py-4">
+                <div class="flex flex-col space-y-3 text-sm">
+                    <a href="{{ url_for('public.index') }}" class="py-2 hover:text-emerald-600">Home</a>
+                    <a href="{{ url_for('public.about') }}" class="py-2 hover:text-emerald-600">About</a>
+                    <a href="{{ url_for('public.services') }}" class="py-2 hover:text-emerald-600">Services</a>
+                    <a href="{{ url_for('public.portfolio') }}" class="py-2 hover:text-emerald-600">Work</a>
+                    <a href="{{ url_for('public.contact') }}" class="py-2 hover:text-emerald-600">Contact</a>
+                    
+                    {% if current_user.is_authenticated %}
+                        <div class="pt-3 border-t">
+                            <a href="{{ url_for('dashboard.client') if current_user.role == 'client' else url_for('dashboard.freelancer') }}" class="block py-2">Dashboard</a>
+                            <a href="{{ url_for('messages.inbox') }}" class="block py-2">Messages</a>
+                            <a href="{{ url_for('auth.logout') }}" class="block py-2 text-red-600">Logout</a>
+                        </div>
+                    {% else %}
+                        <div class="pt-3 border-t flex flex-col gap-y-2">
+                            <a href="{{ url_for('auth.login') }}" class="block py-2">Log in</a>
+                            <a href="{{ url_for('auth.register') }}" class="block py-2 bg-emerald-600 text-white text-center rounded-3xl">Get Started</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
             </div>
         </div>
     </nav>
@@ -199,8 +234,7 @@
                 <div>
                     <h5 class="font-semibold text-white mb-4 text-sm tracking-wider">CONTACT</h5>
                     <div class="space-y-[9px] text-sm text-emerald-300">
-                    <!-- <div><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dfb6b1b9b0f1b4bab2bdb0b6bbbaa9bab3b0afbaadac9fb8b2beb6b3f1bcb0b2">[email&#160;protected]</a></div> -->
-                        <div>info.kemboidevelopers@gmail.com</div>
+                        <div><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5b32353d3475303e363934323f3e2d3e37342b3e29281b3c363a323775383436">[email&#160;protected]</a></div>
                         <div>+254 759 452 209</div>
                         <div>+254 706 835 080</div>
                         <div class="pt-2">Nairobi, Kenya</div>
@@ -215,6 +249,7 @@
                         <a href="#" class="hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
                     </div>
                     <p class="text-xs text-emerald-300">© Kemboi Developers &amp; Consultancy 2026</p>
+                    <p class="text-[10px] text-emerald-400 mt-1">"Innovating Digital Solutions for a Better Tomorrow."</p>
                 </div>
             </div>
             
@@ -236,6 +271,24 @@
             }
         });
         
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const icon = mobileBtn.querySelector('i');
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                }
+            });
+        }
+        
         // Tailwind script
         function initializeTailwind() {
             console.log('%c[Kemboi] Premium UI initialized', 'color:#64748b');
@@ -244,5 +297,5 @@
     </script>
     
     {% block scripts %}{% endblock %}
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a10e8ab79e0c11b6',t:'MTc4MjMzMzU2Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a10f21876ad28a5e',t:'MTc4MjMzOTc0Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
